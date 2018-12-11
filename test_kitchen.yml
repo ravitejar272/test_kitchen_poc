@@ -1,0 +1,46 @@
+---
+driver:
+  name: vra
+  tenant: dev
+  base_url: https://vra.cloud.ford.com
+  username: PRCPSPL1@na1.ford.com
+  password: 
+  verify_ssl: false
+  request_timeout: 30000
+transport:
+  username: Administrator
+  password: 
+provisioner:
+  name: chef_zero
+  product_name: chef
+  product_version: v1.22.0
+  http_proxy: http://proxyvipfmcc.nb.ford.com:83
+  https_proxy: http://proxyvipfmcc.nb.ford.com:83
+  client_rb:
+    no_proxy: localhost, 127.0.0.1, .ford.com, 19.0.0.0/8
+verifier:
+  name: inspec
+platforms:
+- name: windows-server-2016-standard
+  driver:
+    catalog_name: WindowsMVPHabitat
+    catalog_id: 9a68fb0e-1a9c-4f07-be12-81d9536d7ae4
+    subtenant_id: e4116da7-3dd5-44b3-8a68-99f4b248324f
+    cpus: 4
+    memory: 8192
+    description: test description
+    extra_parameters:
+      vSphereVM1:
+        ford.tier:
+          type: string
+          value: PROD
+suites:
+- name: testWindowsMVPHabitat
+  run_list: ''
+  verifier:
+    inspec_tests:
+    - vra/profiles/win-powershell
+    format: html
+    output: result2.html
+    attrs:
+    - vra/profiles/win-powershell/attributes.yml
